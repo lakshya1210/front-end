@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { IBM_Plex_Serif, Inter, Nunito } from "next/font/google";
+import {ClerkProvider} from "@clerk/nextjs"
+// import { Toaster } from "@/components/ui/toaster";
+import Providers from "@/components/common/ProgressBarProvider";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const nunito = Nunito({
+  variable: "--font-nunito",
   subsets: ["latin"],
 });
 
@@ -26,12 +29,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    <ClerkProvider
+      afterSignOutUrl={"/"}
+      appearance={{
+        layout: {
+          socialButtonsPlacement: "bottom",
+          logoImageUrl: "/icons/logo.svg",
+        },
+      }}
+    >
+      <html lang="en">
+        <body className={`${inter.variable} ${nunito.variable} font-inter`}>
+          <Providers>{children}</Providers>
+          {/* <Toaster/> */}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
